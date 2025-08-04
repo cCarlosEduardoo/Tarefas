@@ -4,6 +4,7 @@ import com.gerenc.Gerenciamento_De_Tarefas.model.Status;
 import com.gerenc.Gerenciamento_De_Tarefas.model.Tasks;
 import com.gerenc.Gerenciamento_De_Tarefas.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +19,6 @@ public class TaskController {
     @PostMapping
     public void create(@RequestBody Tasks tasks) {
         taskService.create(tasks);
-    }
-
-    @GetMapping
-    public List<Tasks> read() {
-        return taskService.read();
     }
 
     @PutMapping("{id}")
@@ -43,6 +39,11 @@ public class TaskController {
     @GetMapping("/concluidos")
     public List<Tasks> listarConcluido(){
         return taskService.listarConcluidos();
+    }
+
+    @GetMapping
+    public Page<Tasks> paginacaoVendas(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "5") int size){
+        return taskService.paginacaoDados(page,size);
     }
 
 

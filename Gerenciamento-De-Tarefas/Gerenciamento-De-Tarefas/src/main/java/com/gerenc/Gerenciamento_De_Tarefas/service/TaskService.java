@@ -4,6 +4,9 @@ import com.gerenc.Gerenciamento_De_Tarefas.model.Status;
 import com.gerenc.Gerenciamento_De_Tarefas.model.Tasks;
 import com.gerenc.Gerenciamento_De_Tarefas.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +20,6 @@ public class TaskService {
     public void create(Tasks tasks){
         tasks.setTaskStatus(Status.PENDENTE);
         taskRepository.save(tasks);
-    }
-
-    public List<Tasks> read() {
-        return taskRepository.findAll();
     }
 
     public void update(Long id,Tasks tasks){
@@ -47,6 +46,14 @@ public class TaskService {
 
     public List<Tasks> listarConcluidos(){
         return taskRepository.findByTaskStatus(Status.CONCLUIDO);
+    }
+
+
+    public Page<Tasks> paginacaoDados(int page,int size){
+        Pageable pageable = PageRequest.of(page,size);
+
+        return taskRepository.findAll(pageable);
+
     }
 
 
